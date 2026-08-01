@@ -1,5 +1,5 @@
 import type { Prisma } from '@/@types/prisma/client.js';
-import type { UsersRepository } from '../users-repositoy.js';
+import type { UsersRepository } from '../users-repository.js';
 import { prisma } from '@/libs/prisma.js';
 
 
@@ -15,7 +15,7 @@ export class PrismaUserRepository implements UsersRepository {
         })
     }
     async findBy(where: Prisma.UserWhereInput) {
-        return await prisma.user.findFirst({where: where})
+        return await prisma.user.findFirst({where})
     }
     
 }
