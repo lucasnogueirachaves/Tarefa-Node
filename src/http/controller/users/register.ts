@@ -15,6 +15,16 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     const passwordHash = await hash(password, env.HASH_SALT_ROUNDS)
 
+    const userWithSameEmail = await prisma.user.findFirst({
+        where: {
+            email
+        }
+    })
+
+    if (userWithSameEmail) {
+        return reply.status(409).send({message: 'This email is already in use. '})
+    }
+
     const user = await prisma.user.create({
         data: {
             name,
