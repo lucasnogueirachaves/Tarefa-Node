@@ -10,11 +10,17 @@ export class PrismaUserRepository implements UsersRepository {
     async findMany() {
         return prisma.user.findMany()
     }
-    async findById(id: number) {
+    async findById(publicId: string) {
         return prisma.user.findUnique({
             where: {
-                id
+                publicId
             }
+        })
+    }
+    async update(publicId: string, data: Prisma.UserUpdateInput){
+        return await prisma.user.update({
+            where: {publicId},
+            data
         })
     }
 }

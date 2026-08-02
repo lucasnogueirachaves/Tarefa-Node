@@ -7,14 +7,14 @@ import { z } from "zod";
 export async function getUser(request: FastifyRequest, reply: FastifyReply) {
     try {
         const getParamsSchema = z.object({
-            id: z.coerce.number()
+            publicId: z.string().uuid()
         })
 
-        const {id} = getParamsSchema.parse(request.params)
+        const {publicId} = getParamsSchema.parse(request.params)
 
         const getUserUseCase = makeGetUserUseCase()
 
-        const { user } = await getUserUseCase.execute({ id })
+        const { user } = await getUserUseCase.execute({ publicId})
 
         return reply.status(200).send(UserPresenter.toHTTP(user))
 
