@@ -8,4 +8,5 @@ export interface TasksRepository {
 
     findById(publicId: string): Promise<Task>
     create(data: Prisma.TaskCreateInput): Promise<Task>
+    update(publicId: string, data: Prisma.TaskUpdateInput): Promise<Task>
 }

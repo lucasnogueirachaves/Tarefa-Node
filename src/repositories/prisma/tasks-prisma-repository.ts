@@ -28,4 +28,12 @@ export class PrismaTasksRepository implements TasksRepository {
             data
         })
     }
+    async update(publicId: string, data: Prisma.TaskUpdateInput) {
+        return await prisma.task.update({
+            where: {
+                publicId
+            },
+            data
+        })
+    }
 }
