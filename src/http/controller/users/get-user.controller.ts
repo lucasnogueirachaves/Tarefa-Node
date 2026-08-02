@@ -1,4 +1,5 @@
 import { UserPresenter } from "@/http/presenters/user-presenter.js";
+import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error.js";
 import { makeGetUserUseCase } from "@/use-cases/factories/make-get-user.js";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -19,6 +20,9 @@ export async function getUser(request: FastifyRequest, reply: FastifyReply) {
         return reply.status(200).send(UserPresenter.toHTTP(user))
 
     } catch (error) {
-        return reply.status(400).send({message: "Erro ao buscar usuário"})
+        if (error instanceof ResourceNotFoundError) {
+                return reply.status(404).send({message: error.message})
+            }
+        throw error
     }
 }
