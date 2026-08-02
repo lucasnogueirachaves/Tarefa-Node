@@ -3,6 +3,7 @@ import { registerProject } from "./register-projects.controller.js";
 import { listProject } from "./list-projects.controller.js";
 import { getProject } from "./get-project.controller.js";
 import { updateProject } from "./update-project.controller.js";
+import { deleteProject } from "./delete-project.controller.js";
 
 
 export async function projectsRoutes(app: FastifyInstance) {
@@ -10,4 +11,5 @@ export async function projectsRoutes(app: FastifyInstance) {
     app.get('/', listProject)
     app.get('/:publicId', getProject)
     app.put('/:publicId', updateProject)
+    app.delete('/:publicId', deleteProject)
 }
