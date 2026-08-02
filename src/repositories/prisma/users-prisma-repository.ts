@@ -1,4 +1,4 @@
-import type { Prisma, User } from '@/@types/prisma/client.js';
+import type { Prisma } from '@/@types/prisma/client.js';
 import type { UsersRepository } from '../users-repository.js';
 import { prisma } from '@/libs/prisma.js';
 
@@ -10,5 +10,11 @@ export class PrismaUserRepository implements UsersRepository {
     async findMany() {
         return prisma.user.findMany()
     }
-    
+    async findById(id: number) {
+        return prisma.user.findUnique({
+            where: {
+                id
+            }
+        })
+    }
 }

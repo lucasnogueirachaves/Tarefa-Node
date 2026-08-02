@@ -1,17 +1,15 @@
-import { PrismaUserRepository } from "@/repositories/prisma/users-prisma-repository.js";
-import { ListUsersUseCase } from "@/use-cases/users/list-users.js";
+import { makeListUsersUseCase } from "@/use-cases/factories/make-list-users-use-case.js";
+import { UserPresenter } from "@/http/presenters/user-presenter.js";
 import type { FastifyReply, FastifyRequest } from "fastify";
 
 
-export async function listUsers(request: FastifyRequest, reply: FastifyReply) {
+export async function listUsers(_request: FastifyRequest, reply: FastifyReply) {
     try {
-        const usersRepository = new PrismaUserRepository()
-
-        const listUsersUseCase = new ListUsersUseCase(usersRepository)
+        const listUsersUseCase = makeListUsersUseCase()
 
         const users = await listUsersUseCase.execute()
 
-        return reply.status(200).send(users)
+        return reply.status(200).send(UserPresenter.toHTTP(users))
 
     } catch (error) {
         return reply.status(400).send({message: "Erro ao listar usuários"})
