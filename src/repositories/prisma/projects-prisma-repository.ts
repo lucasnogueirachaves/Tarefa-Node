@@ -17,4 +17,17 @@ export class PrismaProjectRepository implements ProjectsRepository {
             }
         })
     }
+    async update(publicId: string, data: Prisma.ProjectUpdateInput) {
+        return await prisma.project.update({
+            where: {publicId},
+            data
+        })
+    }
+    async delete(publicId: string) {
+        await prisma.user.delete({
+            where: {
+                publicId
+            }
+        })
+    }
 }
