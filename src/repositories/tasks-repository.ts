@@ -5,4 +5,6 @@ export interface TasksRepository {
         priority?: string
         completed?: boolean
     }): Promise<Task[]>
+
+    findById(publicId: string): Promise<Task>
 }
