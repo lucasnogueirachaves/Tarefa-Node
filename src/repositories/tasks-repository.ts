@@ -1,4 +1,4 @@
-import type {Task} from '@/@types/prisma/client.js'
+import type { Prisma, Task } from '@/@types/prisma/client.js'
 
 export interface TasksRepository {
     findMany(filters?: {
@@ -7,4 +7,5 @@ export interface TasksRepository {
     }): Promise<Task[]>
 
     findById(publicId: string): Promise<Task>
+    create(data: Prisma.TaskCreateInput): Promise<Task>
 }

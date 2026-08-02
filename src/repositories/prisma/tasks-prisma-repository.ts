@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma.js"
+import type { Prisma } from '@/@types/prisma/client.js';
 import type { TaskPriority } from "@/@types/prisma/enums.js"
 import type { TasksRepository } from "../tasks-repository.js"
 export class PrismaTasksRepository implements TasksRepository {
@@ -20,6 +21,11 @@ export class PrismaTasksRepository implements TasksRepository {
             where: {
                 publicId
             }
+        })
+    }
+    async create(data: Prisma.TaskCreateInput) {
+        return await prisma.task.create({
+            data
         })
     }
 }
