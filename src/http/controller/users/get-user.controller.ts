@@ -25,4 +25,4 @@ export async function getUser(request: FastifyRequest, reply: FastifyReply) {
             }
         throw error
     }
-}
+} 
