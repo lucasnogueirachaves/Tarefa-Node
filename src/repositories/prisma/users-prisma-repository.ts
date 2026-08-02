@@ -10,6 +10,13 @@ export class PrismaUserRepository implements UsersRepository {
     async findMany() {
         return prisma.user.findMany()
     }
+    async findByEmail(email: string) {
+    return prisma.user.findUnique({
+        where: {
+            email,
+        },
+    })
+}
     async findById(publicId: string) {
         return prisma.user.findUnique({
             where: {
@@ -21,6 +28,13 @@ export class PrismaUserRepository implements UsersRepository {
         return await prisma.user.update({
             where: {publicId},
             data
+        })
+    }
+    async delete(publicId: string) {
+        await prisma.user.delete({
+            where: {
+                publicId
+            }
         })
     }
 }
