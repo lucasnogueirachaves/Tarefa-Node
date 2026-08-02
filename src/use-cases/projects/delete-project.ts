@@ -15,6 +15,10 @@ export class DeleteProjectUseCase {
             throw new ResourceNotFoundError()
         }
 
+        if (project.tasks.length > 0) {
+            throw new Error("Não é possível excluir projeto com tarefas")
+        }
+
         await this.projectsRepository.delete(project.publicId)
     }
 }

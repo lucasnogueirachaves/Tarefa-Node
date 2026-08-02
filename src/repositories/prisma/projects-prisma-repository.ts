@@ -14,6 +14,9 @@ export class PrismaProjectRepository implements ProjectsRepository {
         return await prisma.project.findUnique({
             where: {
                 publicId
+            },
+            include: {
+                tasks: true
             }
         })
     }
@@ -24,7 +27,7 @@ export class PrismaProjectRepository implements ProjectsRepository {
         })
     }
     async delete(publicId: string) {
-        await prisma.user.delete({
+        await prisma.project.delete({
             where: {
                 publicId
             }

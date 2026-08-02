@@ -15,7 +15,7 @@ export async function getProject(request: FastifyRequest, reply: FastifyReply) {
         const getProjectUseCase = makeGetProjectUseCase()
         const {project} = await getProjectUseCase.execute({publicId})
 
-        return reply.status(201).send(ProjectPresenter.toHTTP(project))
+        return reply.status(200).send(ProjectPresenter.toHTTP(project))
 
     } catch (error: unknown) {
         if (error instanceof ResourceNotFoundError) {

@@ -16,7 +16,7 @@ export async function deleteProject(request: FastifyRequest, reply: FastifyReply
 
         await deleteProjectUseCase.execute({publicId})
 
-        return reply.status(204).send({message: "Usuário deletado com sucesso!"})
+        return reply.status(200).send({message: "Projeto deletado com sucesso!"})
 
     } catch (error) {
         if (error instanceof ResourceNotFoundError) {
