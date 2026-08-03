@@ -1,3 +1,4 @@
+import type { UserRole } from "@/@types/prisma/enums.js";
 import { UserPresenter } from "@/http/presenters/user-presenter.js";
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error.js";
 import { makeUpdateUseCase } from "@/use-cases/factories/make-update-user.js";
@@ -27,6 +28,7 @@ export async function updateUser(request: FastifyRequest, reply: FastifyReply) {
             ...(name !== undefined && { name }),
             ...(password !== undefined && { password }),
             loggedUserId: (request.user as { publicId: string }).publicId,
+            loggedUserRole: (request.user as {role: UserRole}).role
         })
 
         return reply.status(200).send(UserPresenter.toHTTP(user))

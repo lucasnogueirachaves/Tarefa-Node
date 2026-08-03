@@ -1,4 +1,4 @@
-import type { User } from "@/@types/prisma/client.js";
+import type { User, UserRole } from "@/@types/prisma/client.js";
 import type { UsersRepository } from "@/repositories/users-repository.js";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error.js";
 import bcrypt from "bcryptjs";
@@ -6,10 +6,11 @@ import { env } from "@/env/index.js";
 import { NotLoggedError } from "../errors/not-logged-error.js";
 
 interface UpdateUserUseCaseRequest {
-    publicId: string,
-    name?: string,
+    publicId: string
+    name?: string
     password?: string
     loggedUserId: string
+    loggedUserRole: UserRole
 }
 
 type UpdateUserUseCaseResponse = {
@@ -19,7 +20,7 @@ type UpdateUserUseCaseResponse = {
 export class UpdateUserUseCase {
     constructor(private usersRepository: UsersRepository) {}
 
-    async execute({ publicId, name, password, loggedUserId }: UpdateUserUseCaseRequest): Promise<UpdateUserUseCaseResponse> {
+    async execute({ publicId, name, password, loggedUserId, loggedUserRole }: UpdateUserUseCaseRequest): Promise<UpdateUserUseCaseResponse> {
         const userToUpdate = await this.usersRepository.findById(publicId)
 
         if (!userToUpdate) {
@@ -28,7 +29,7 @@ export class UpdateUserUseCase {
 
         const userToUpdateId = userToUpdate?.publicId
 
-        if(userToUpdateId !== loggedUserId) {
+        if((userToUpdateId !== loggedUserId) && (loggedUserRole !== 'ADMIN')) {
             throw new NotLoggedError()
         }
 
