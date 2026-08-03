@@ -5,9 +5,11 @@ import { getUser } from "./get-user.controller.js"
 import { updateUser } from "./update-user.controller.js"
 import { deleteUser } from "./delete-user.js"
 import { getUserTasks } from "./get-user-tasks.controller.js"
+import { authenticate } from "./authenticate.controller.js"
 
 export async function usersRoutes(app: FastifyInstance) {
     app.post('/', register)
+    app.post('/authenticate', authenticate)
     app.get('/', listUsers)
     app.get('/:publicId', getUser)
     app.put('/:publicId', updateUser)
