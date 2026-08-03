@@ -43,4 +43,11 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
     }
+    async findManyByProject(projectId: number) {
+        return await prisma.task.findMany({
+            where: {
+                projectId
+            }
+        })
+    }
 }

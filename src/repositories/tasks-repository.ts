@@ -10,4 +10,5 @@ export interface TasksRepository {
     create(data: Prisma.TaskCreateInput): Promise<Task>
     update(publicId: string, data: Prisma.TaskUpdateInput): Promise<Task>
     delete(publicId: string): Promise<void>
+    findManyByProject(projectId: number): Promise<Task[]>
 }
