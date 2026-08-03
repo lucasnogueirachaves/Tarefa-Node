@@ -10,4 +10,5 @@ export interface ProjectsRepository {
     findById(publicID: string): Promise<ProjectWithTasks | null>
     update(publicId: string, data: Prisma.ProjectUpdateInput): Promise<Project | null>
     delete(publicId: string): Promise<void>
+    findManyWithTasks(): Promise<ProjectWithTasks[]>
 }

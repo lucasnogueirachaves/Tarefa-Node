@@ -33,4 +33,11 @@ export class PrismaProjectRepository implements ProjectsRepository {
             }
         })
     }
+    async findManyWithTasks() {
+        return await prisma.project.findMany({
+            include: {
+                tasks: true
+            }
+        })
+    }
 }
