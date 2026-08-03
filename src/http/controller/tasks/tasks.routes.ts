@@ -6,6 +6,7 @@ import { updateTask } from './update-task.controller.js';
 import { deleteProject } from '../projects/delete-project.controller.js';
 import { completeTask } from './complete-task.controller.js';
 import { assignUsers } from './assign-users.controller.js';
+import { deleteUserFromTask } from './delete-user-from-task.controller.js';
 
 export async function tasksRoutes(app: FastifyInstance) {
     app.get('/', getTaskFilter)
@@ -15,4 +16,5 @@ export async function tasksRoutes(app: FastifyInstance) {
     app.delete('/:publicId', deleteProject)
     app.patch('/:publicId/complete', completeTask)
     app.post('/:publicId/assign', assignUsers)
+    app.delete('/:publicId/assign/:userId', deleteUserFromTask)
 }

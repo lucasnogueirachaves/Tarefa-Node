@@ -9,4 +9,14 @@ export class PrismaTaskUsersRepository implements TaskUsersRepository {
             data
         })
     }
+    async delete(taskId: number, userId: number) {
+        await prisma.taskUser.delete({
+            where: {
+                taskId_userId: {
+                    taskId,
+                    userId
+                }
+            }
+        })
+    }
 }
