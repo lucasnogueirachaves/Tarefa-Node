@@ -5,13 +5,15 @@ import { getProject } from "./get-project.controller.js";
 import { updateProject } from "./update-project.controller.js";
 import { deleteProject } from "./delete-project.controller.js";
 import { getProjectTasks } from "./get-project-tasks.controller.js";
+import { verifyJwt } from "@/http/middlewares/verify-jwt.js"
+import { verifyUserRole } from "@/http/middlewares/verify-user-role.js"
 
 
 export async function projectsRoutes(app: FastifyInstance) {
-    app.post('/', registerProject)
-    app.get('/', listProject)
-    app.get('/:publicId', getProject)
-    app.put('/:publicId', updateProject)
-    app.delete('/:publicId', deleteProject)
-    app.get('/:publicId/tasks', getProjectTasks)
+    app.post('/', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, registerProject)
+    app.get('/', {onRequest: [verifyJwt]}, listProject)
+    app.get('/:publicId', {onRequest: [verifyJwt]}, getProject)
+    app.put('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, updateProject)
+    app.delete('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, deleteProject)
+    app.get('/:publicId/tasks', {onRequest: [verifyJwt]}, getProjectTasks)
 }
