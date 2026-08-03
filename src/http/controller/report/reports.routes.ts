@@ -5,4 +5,4 @@ import { verifyUserRole } from "@/http/middlewares/verify-user-role.js"
 
 export async function reportRoutes(app: FastifyInstance) {
     app.get('/projects', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, getProjectsReport)
-}
+} 

@@ -16,7 +16,7 @@ export class PrismaTasksRepository implements TasksRepository {
         })
     }
     async findById(publicId: string){
-        return await prisma.task.findUniqueOrThrow({
+        return await prisma.task.findUnique({
             where: {
                 publicId
             },

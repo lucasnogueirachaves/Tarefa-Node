@@ -11,7 +11,7 @@ export interface TasksRepository {
         completed?: boolean
     }): Promise<Task[]>
 
-    findById(publicId: string): Promise<TaskWithUsers>
+    findById(publicId: string): Promise<TaskWithUsers | null>
     create(data: Prisma.TaskCreateInput): Promise<Task>
     update(publicId: string, data: Prisma.TaskUpdateInput): Promise<Task>
     delete(publicId: string): Promise<void>

@@ -27,7 +27,7 @@ export async function updateUser(request: FastifyRequest, reply: FastifyReply) {
             publicId,
             ...(name !== undefined && { name }),
             ...(password !== undefined && { password }),
-            loggedUserId: (request.user as { publicId: string }).publicId,
+            loggedUserId: (request.user as { sub: string }).sub,
             loggedUserRole: (request.user as {role: UserRole}).role
         })
 

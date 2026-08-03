@@ -4,6 +4,7 @@ import { makeCompleteTaskUseCase } from "@/use-cases/factories/make-complete-tas
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error.js"
 
 
+
 export async function completeTask(request: FastifyRequest, reply: FastifyReply) {
     try {
         const paramsSchema = z.object({
@@ -16,7 +17,7 @@ export async function completeTask(request: FastifyRequest, reply: FastifyReply)
 
         const { task } = await completeTaskUseCase.execute({
             publicId,
-            loggedUserId: (request.user as { publicId: string }).publicId
+            loggedUserId: (request.user as { sub: string }).sub
         })
 
         return reply.status(200).send(task)

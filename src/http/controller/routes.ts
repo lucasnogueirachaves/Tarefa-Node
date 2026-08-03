@@ -9,4 +9,4 @@ export async function appRoutes(app: FastifyInstance) {
     app.register(projectsRoutes, {prefix: '/projects'})
     app.register(tasksRoutes, {prefix: '/tasks'})
     app.register(reportRoutes, {prefix: '/reports'})
-}
+} 

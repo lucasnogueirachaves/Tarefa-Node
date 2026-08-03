@@ -6,7 +6,7 @@ interface UpdateProjectUseCaseRequest {
     publicId: string,
     name: string,
     description?: string,
-    status: ProjectStatus
+    status?: ProjectStatus
 }
 
 type UpdateProjectUseCaseResponse = {

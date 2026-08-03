@@ -10,10 +10,10 @@ import { verifyUserRole } from "@/http/middlewares/verify-user-role.js"
 
 
 export async function projectsRoutes(app: FastifyInstance) {
-    app.post('/', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, registerProject)
-    app.get('/', {onRequest: [verifyJwt]}, listProject)
-    app.get('/:publicId', {onRequest: [verifyJwt]}, getProject)
-    app.put('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, updateProject)
-    app.delete('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, deleteProject)
-    app.get('/:publicId/tasks', {onRequest: [verifyJwt]}, getProjectTasks)
-}
+    app.post('/', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, registerProject) //
+    app.get('/', {onRequest: [verifyJwt]}, listProject) //
+    app.get('/:publicId', {onRequest: [verifyJwt]}, getProject) //
+    app.put('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, updateProject) //
+    app.delete('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, deleteProject) //
+    app.get('/:publicId/tasks', {onRequest: [verifyJwt]}, getProjectTasks) 
+} 
