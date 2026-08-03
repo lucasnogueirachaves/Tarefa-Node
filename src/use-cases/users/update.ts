@@ -3,11 +3,13 @@ import type { UsersRepository } from "@/repositories/users-repository.js";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error.js";
 import bcrypt from "bcryptjs";
 import { env } from "@/env/index.js";
+import { NotLoggedError } from "../errors/not-logged-error.js";
 
 interface UpdateUserUseCaseRequest {
     publicId: string,
     name?: string,
     password?: string
+    loggedUserId: string
 }
 
 type UpdateUserUseCaseResponse = {
@@ -17,11 +19,17 @@ type UpdateUserUseCaseResponse = {
 export class UpdateUserUseCase {
     constructor(private usersRepository: UsersRepository) {}
 
-    async execute({ publicId, name, password }: UpdateUserUseCaseRequest): Promise<UpdateUserUseCaseResponse> {
+    async execute({ publicId, name, password, loggedUserId }: UpdateUserUseCaseRequest): Promise<UpdateUserUseCaseResponse> {
         const userToUpdate = await this.usersRepository.findById(publicId)
 
         if (!userToUpdate) {
             throw new ResourceNotFoundError()
+        }
+
+        const userToUpdateId = userToUpdate?.publicId
+
+        if(userToUpdateId !== loggedUserId) {
+            throw new NotLoggedError()
         }
 
         const dataToUpdate: {

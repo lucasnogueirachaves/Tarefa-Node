@@ -3,7 +3,6 @@ import type { Prisma } from '@/@types/prisma/client.js';
 import type { TaskPriority } from "@/@types/prisma/enums.js"
 import type { TasksRepository } from "../tasks-repository.js"
 export class PrismaTasksRepository implements TasksRepository {
-
     async findMany(filters?: {
         priority?: TaskPriority
         completed?: boolean
@@ -20,6 +19,13 @@ export class PrismaTasksRepository implements TasksRepository {
         return await prisma.task.findUniqueOrThrow({
             where: {
                 publicId
+            },
+            include: {
+                taskUsers: {
+                    include: {
+                        user: true
+                    }
+                }
             }
         })
     }

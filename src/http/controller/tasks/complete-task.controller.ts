@@ -15,7 +15,8 @@ export async function completeTask(request: FastifyRequest, reply: FastifyReply)
         const completeTaskUseCase = makeCompleteTaskUseCase()
 
         const { task } = await completeTaskUseCase.execute({
-            publicId
+            publicId,
+            loggedUserId: (request.user as { publicId: string }).publicId
         })
 
         return reply.status(200).send(task)
