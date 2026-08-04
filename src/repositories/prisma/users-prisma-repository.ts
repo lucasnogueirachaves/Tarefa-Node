@@ -8,7 +8,15 @@ export class PrismaUserRepository implements UsersRepository {
         return await prisma.user.create({data})
     }
     async findMany() {
-        return prisma.user.findMany()
+        return prisma.user.findMany({
+            include: {
+                taskUsers: {
+                    include: {
+                        task: true,
+                    },
+                },
+            },
+        })
     }
     async findByEmail(email: string) {
     return prisma.user.findUnique({
@@ -30,7 +38,14 @@ export class PrismaUserRepository implements UsersRepository {
         return prisma.user.findUnique({
             where: {
                 publicId
-            }
+            },
+            include: {
+                taskUsers: {
+                    include: {
+                        task: true,
+                    },
+                },
+            },
         })
     }
     async update(publicId: string, data: Prisma.UserUpdateInput){

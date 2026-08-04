@@ -15,8 +15,8 @@ export async function tasksRoutes(app: FastifyInstance) {
     app.get('/:publicId', {onRequest: [verifyJwt]}, getTask) //
     app.post('/', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, registerTask) //
     app.put('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, updateTask) //
-    app.delete('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, deleteTask)
-    app.patch('/:publicId/complete', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, completeTask) // fazer para atribuido
+    app.delete('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, deleteTask) //
+    app.patch('/:publicId/complete', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, completeTask) 
     app.post('/:publicId/assign', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, assignUsers)
     app.delete('/:publicId/assign/:userId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, deleteUserFromTask)
 } 
