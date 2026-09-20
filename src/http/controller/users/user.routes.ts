@@ -8,6 +8,7 @@ import { getUserTasks } from "./get-user-tasks.controller.js"
 import { authenticate } from "./authenticate.controller.js"
 import { verifyJwt } from "@/http/middlewares/verify-jwt.js"
 import { verifyUserRole } from "@/http/middlewares/verify-user-role.js"
+import { forgotPassword } from "./forgot-password.controller.js"
 
 export async function usersRoutes(app: FastifyInstance) {
     app.post('/', register) //
@@ -17,4 +18,5 @@ export async function usersRoutes(app: FastifyInstance) {
     app.put('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, updateUser) //
     app.delete('/:publicId', {onRequest: [verifyJwt, verifyUserRole(['ADMIN'])]}, deleteUser) //
     app.get('/:publicId/tasks', {onRequest: [verifyJwt]}, getUserTasks) 
+    app.post('/auth/forgot-password', forgotPassword)
 }
