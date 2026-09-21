@@ -1,4 +1,4 @@
-import { env } from '@env/index'
+import { env } from '@env/index.js'
 import { logger } from '@lib/logger'
 import nodemailer, { SentMessageInfo } from 'nodemailer'
 import { Attachment } from 'nodemailer/lib/mailer'

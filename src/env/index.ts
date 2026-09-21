@@ -17,6 +17,8 @@ const envSchema = z.object({
 
   SENTRY_DSN: z.string().optional(),
 
+  CRON_SCHEDULE: z.string().default('0 23 * * *'),
+
   // SMTP
   SMTP_EMAIL: z.email(),
   SMTP_PASSWORD: z.string().min(1),

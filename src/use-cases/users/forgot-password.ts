@@ -1,5 +1,5 @@
 import { emailSchema } from '@/http/schemas/utils/email'
-import { User } from '@prisma/client'
+import { User } from '@/prisma/client'
 import { UserRepository } from '@/repositories/users-repository'
 import { UserNotFoundForPasswordResetError } from '@/use-cases/errors/user-not-found-for-password-reset-error.js'
 import { randomBytes } from 'crypto'

@@ -1,5 +1,6 @@
 import { app } from "./app.js";
 import { env } from "./env/index.js";
+import { startJobs } from "./jobs/index.js";
 
 app.listen({
     host: env.HOST,
@@ -7,4 +8,6 @@ app.listen({
 }).then(() => {
     const url = `http://localhost:${env.PORT}`
     console.log(`HTTP Server Running at ${url}`)
+
+    startJobs()
 })
