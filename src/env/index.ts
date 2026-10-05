@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-	// Environment
 	NODE_ENV: z
 		.enum(["development", "staging", "production", "test"])
 		.default("development"),
@@ -9,10 +8,12 @@ const envSchema = z.object({
 		.enum(["info", "debug", "warn", "error", "trace"])
 		.default("info"),
 
-	// Database
 	DATABASE_URL: z.url(),
 
-	// App
+	REDIS_HOST: z.string().default("localhost"),
+	REDIS_PORT: z.coerce.number().default(6379),
+	REDIS_PASSWORD: z.string().optional(),
+
 	APP_NAME: z.string().default("Backend Template Reborn"),
 	APP_PORT: z.coerce.number().default(3000),
 	JWT_SECRET: z
@@ -25,7 +26,6 @@ const envSchema = z.object({
 
 	CRON_SCHEDULE: z.string().default("0 23 * * *"),
 
-	// SMTP
 	SMTP_EMAIL: z.email(),
 	SMTP_PASSWORD: z.string().min(1),
 	SMTP_PORT: z.coerce.number(),
