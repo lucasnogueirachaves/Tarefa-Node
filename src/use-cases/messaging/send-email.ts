@@ -1,16 +1,22 @@
-import { sendEmail } from '@/utils/send-email.js'
-import { Attachment } from 'nodemailer/lib/mailer'
+import type Mail from "nodemailer/lib/mailer";
+import { sendEmail } from "@/utils/send-email.js";
 
 interface SendEmailUseCaseRequest {
-  to: string
-  subject: string
-  message: string
-  html: string
-  attachments?: Attachment[]
+	to: string;
+	subject: string;
+	message: string;
+	html: string;
+	attachments?: Mail.Attachment[] | undefined;
 }
 
 export class SendEmailUseCase {
-  async execute({ to, subject, message, html, attachments }: SendEmailUseCaseRequest) {
-    return await sendEmail({ to, subject, message, html, attachments })
-  }
+	async execute({
+		to,
+		subject,
+		message,
+		html,
+		attachments,
+	}: SendEmailUseCaseRequest) {
+		return await sendEmail({ to, subject, message, html, attachments });
+	}
 }

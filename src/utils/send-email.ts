@@ -1,49 +1,45 @@
-import { env } from '@env/index.js'
-import { logger } from '@lib/logger'
-import nodemailer, { SentMessageInfo } from 'nodemailer'
-import { Attachment } from 'nodemailer/lib/mailer'
+import nodemailer, { type SentMessageInfo } from "nodemailer";
+import type Mail from "nodemailer/lib/mailer";
+import { env } from "@/env/index.js";
 
 const transporter = nodemailer.createTransport({
-  host: env.SMTP_HOST,
-  port: env.SMTP_PORT,
-  secure: env.SMTP_SECURE,
-  auth: {
-    user: env.SMTP_EMAIL,
-    pass: env.SMTP_PASSWORD,
-  },
-})
+	host: env.SMTP_HOST,
+	port: env.SMTP_PORT,
+	secure: env.SMTP_SECURE,
+	auth: { user: env.SMTP_EMAIL, pass: env.SMTP_PASSWORD },
+});
 
 interface SendEmailRequest {
-  to: string
-  subject: string
-  message: string
-  html: string
-  attachments?: Attachment[]
+	to: string;
+	subject: string;
+	message: string;
+	html: string;
+	attachments?: Mail.Attachment[] | undefined;
 }
 
 export async function sendEmail({
-  to,
-  subject,
-  message,
-  html,
-  attachments,
+	to,
+	subject,
+	message,
+	html,
+	attachments,
 }: SendEmailRequest): Promise<SentMessageInfo> {
-  try {
-    const info = await transporter.sendMail({
-      from: env.SMTP_EMAIL,
-      to,
-      subject,
-      text: message,
-      html,
-      ...(attachments ? { attachments } : {}),
-    })
+	try {
+		const info = await transporter.sendMail({
+			from: env.SMTP_EMAIL,
+			to,
+			subject,
+			text: message,
+			html,
+			...(attachments ? { attachments } : {}),
+		});
 
-    logger.info({ sentTo: to, messageId: info.messageId }, 'Message sent!')
+		console.info("Message sent!", { sentTo: to, messageId: info.messageId });
 
-    return info
-  } catch (error) {
-    logger.error({ error }, 'Erro ao enviar e-mail')
+		return info;
+	} catch (error) {
+		console.error("Erro ao enviar e-mail", error);
 
-    throw error
-  }
+		throw error;
+	}
 }

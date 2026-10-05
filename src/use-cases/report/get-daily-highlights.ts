@@ -1,22 +1,24 @@
-import type { Post, PostsRepository } from '@/repositories/posts-repository.js'
+import type { Post, PostsRepository } from "@/repositories/posts-repository.js";
 
 interface GetDailyHighlightsUseCaseRequest {
-    limit?: number
+	limit?: number;
 }
 
 interface GetDailyHighlightsUseCaseResponse {
-    posts: Post[]
+	posts: Post[];
 }
 
 export class GetDailyHighlightsUseCase {
-    constructor(private postsRepository: PostsRepository) {}
+	constructor(private postsRepository: PostsRepository) {}
 
-    async execute({ limit = 5 }: GetDailyHighlightsUseCaseRequest = {}): Promise<GetDailyHighlightsUseCaseResponse> {
-        const posts = await this.postsRepository.findTopLikedInLastHours({
-            hours: 24,
-            limit,
-        })
+	async execute({
+		limit = 5,
+	}: GetDailyHighlightsUseCaseRequest = {}): Promise<GetDailyHighlightsUseCaseResponse> {
+		const posts = await this.postsRepository.findTopLikedInLastHours({
+			hours: 24,
+			limit,
+		});
 
-        return { posts }
-    }
+		return { posts };
+	}
 }

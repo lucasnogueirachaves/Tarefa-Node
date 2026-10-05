@@ -1,12 +1,11 @@
 import type { UsersRepository } from "@/repositories/users-repository.js";
 
-
 export class ListUsersUseCase {
-    constructor(private usersRepository: UsersRepository) {}
+	constructor(private usersRepository: UsersRepository) {}
 
-    async execute() {
-        const users = await this.usersRepository.findMany()
+	async execute() {
+		const users = await this.usersRepository.findMany();
 
-        return users
-    }
+		return users;
+	}
 }
