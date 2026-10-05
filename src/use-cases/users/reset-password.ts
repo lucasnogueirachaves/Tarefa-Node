@@ -22,18 +22,20 @@ export class ResetPasswordUseCase {
 	}: ResetPasswordUseCaseCaseRequest): Promise<ResetPasswordUseCaseCaseResponse> {
 		const passwordHash = await hash(password, env.HASH_SALT_ROUNDS);
 
-		const userExists = await this.usersRepository.findBy({ token });
+		const userExists = await this.usersRepository.findByToken(token);
 
 		if (!userExists?.tokenExpiresAt || userExists.tokenExpiresAt < new Date()) {
 			throw new InvalidTokenError();
 		}
 
-		const user = await this.usersRepository.update(userExists.id, {
+		const user = await this.usersRepository.update(userExists.publicId, {
 			passwordHash,
 			token: null,
 			tokenExpiresAt: null,
 			passwordChangedAt: new Date(),
 		});
+
+		if (!user) throw new InvalidTokenError();
 
 		return { user };
 	}

@@ -10,6 +10,8 @@ export interface UsersRepository {
 	create(data: Prisma.UserCreateInput): Promise<User>;
 	findMany(): Promise<UserWithTasks[]>;
 	findByEmail(email: string): Promise<User | null>;
+	findByUsername(username: string): Promise<User | null>;
+	findByToken(token: string): Promise<User | null>;
 	findById(publicID: string): Promise<UserWithTasks | null>;
 	findManyByPublicId(publicIds: string[]): Promise<User[]>;
 	update(publicId: string, data: Prisma.UserUpdateInput): Promise<User | null>;

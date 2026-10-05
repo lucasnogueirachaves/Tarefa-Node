@@ -1,7 +1,7 @@
-import { randomBytes } from "crypto";
-import { emailSchema } from "@/http/schemas/utils/email";
-import type { User } from "@/prisma/client";
-import type { UserRepository } from "@/repositories/users-repository";
+import { randomBytes } from "node:crypto";
+import type { User } from "@/@types/prisma/client.js";
+import { emailSchema } from "@/http/schemas/utils/email.js";
+import type { UsersRepository } from "@/repositories/users-repository.js";
 import { UserNotFoundForPasswordResetError } from "@/use-cases/errors/user-not-found-for-password-reset-error.js";
 
 interface ForgotPasswordUseCaseRequest {
@@ -17,39 +17,29 @@ const EXPIRES_IN_MINUTES = 15;
 const TOKEN_LENGTH = 32;
 
 export class ForgotPasswordUseCase {
-	constructor(private usersRepository: UserRepository) {}
+	constructor(private usersRepository: UsersRepository) {}
 
 	async execute({
 		login,
 	}: ForgotPasswordUseCaseRequest): Promise<ForgotPasswordUseCaseResponse> {
-		let userExists: User | null = null;
+		const userExists = emailSchema.safeParse(login).success
+			? await this.usersRepository.findByEmail(login)
+			: await this.usersRepository.findByUsername(login);
 
-		if (emailSchema.safeParse(login).success) {
-			userExists = await this.usersRepository.findBy({ email: login });
-		} else {
-			userExists = await this.usersRepository.findBy({ username: login });
-		}
+		if (!userExists) throw new UserNotFoundForPasswordResetError();
 
-		const passwordToken = randomBytes(TOKEN_LENGTH).toString("hex");
-
+		const token = randomBytes(TOKEN_LENGTH).toString("hex");
 		const tokenExpiresAt = new Date(
 			Date.now() + EXPIRES_IN_MINUTES * 60 * 1000,
 		);
 
-		const tokenData = {
-			token: passwordToken,
+		const user = await this.usersRepository.update(userExists.publicId, {
+			token,
 			tokenExpiresAt,
-		};
-
-		if (!userExists) throw new UserNotFoundForPasswordResetError();
-
-		const user = await this.usersRepository.update(userExists.id, {
-			...tokenData,
 		});
 
-		return {
-			user,
-			token: passwordToken,
-		};
+		if (!user) throw new UserNotFoundForPasswordResetError();
+
+		return { user, token };
 	}
 }

@@ -41,7 +41,7 @@ export class UpdateUserUseCase {
 
 		const dataToUpdate: {
 			name?: string;
-			password?: string;
+			passwordHash?: string;
 		} = {};
 
 		if (name !== undefined) {
@@ -49,7 +49,10 @@ export class UpdateUserUseCase {
 		}
 
 		if (password !== undefined) {
-			dataToUpdate.password = await bcrypt.hash(password, env.HASH_SALT_ROUNDS);
+			dataToUpdate.passwordHash = await bcrypt.hash(
+				password,
+				env.HASH_SALT_ROUNDS,
+			);
 		}
 
 		const user = await this.usersRepository.update(

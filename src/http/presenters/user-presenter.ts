@@ -1,9 +1,11 @@
 import type { Task, TaskUser, User } from "@/@types/prisma/client.js";
 
 type UserWithTasks = User & {
-	taskUsers: (TaskUser & {
-		task: Task;
-	})[];
+	taskUsers?:
+		| (TaskUser & {
+				task: Task;
+		  })[]
+		| undefined;
 };
 
 type HTTPUser = {
@@ -35,8 +37,8 @@ export class UserPresenter {
 			name: input.name,
 			email: input.email,
 			createdAt: input.createdAt,
-			updatedAt: input.updateAt,
-			tasks: input.taskUsers.map((taskUser) => ({
+			updatedAt: input.updatedAt,
+			tasks: (input.taskUsers ?? []).map((taskUser) => ({
 				id: taskUser.task.publicId,
 				title: taskUser.task.title,
 				description: taskUser.task.description,

@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { resetPasswordSchema } from "@/http/schemas/users/reset-password-schema.js";
 import { InvalidTokenError } from "@/use-cases/errors/invalid-token-error.js";
-import { makeResetPasswordUseCase } from "@/use-cases/users/factories/make-reset-passwd-use-case.js";
+import { makeResetPasswordUseCase } from "@/use-cases/factories/make-reset-password-use-case.js";
 
 export async function resetPassword(
 	request: FastifyRequest,

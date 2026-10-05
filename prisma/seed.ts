@@ -12,7 +12,9 @@ export async function seed() {
 			publicId: "00000000-0000-0000-0000-0000000001",
 			name: "Admin",
 			email: "admin@example.com",
-			password: await hash("12345678", env.HASH_SALT_ROUNDS),
+			username: "admin",
+			cpf: "00000000000",
+			passwordHash: await hash("12345678", env.HASH_SALT_ROUNDS),
 			role: "ADMIN",
 		},
 	});

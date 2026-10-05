@@ -1,4 +1,4 @@
-import type { Attachment } from "nodemailer/lib/mailer";
+import type Mail from "nodemailer/lib/mailer";
 import { sendEmail } from "@/utils/send-email.js";
 
 interface SendEmailUseCaseRequest {
@@ -6,7 +6,7 @@ interface SendEmailUseCaseRequest {
 	subject: string;
 	message: string;
 	html: string;
-	attachments?: Attachment[];
+	attachments?: Mail.Attachment[] | undefined;
 }
 
 export class SendEmailUseCase {

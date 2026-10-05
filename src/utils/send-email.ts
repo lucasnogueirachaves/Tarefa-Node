@@ -1,16 +1,12 @@
-import { env } from "@env/index.js";
-import { logger } from "@lib/logger";
 import nodemailer, { type SentMessageInfo } from "nodemailer";
-import type { Attachment } from "nodemailer/lib/mailer";
+import type Mail from "nodemailer/lib/mailer";
+import { env } from "@/env/index.js";
 
 const transporter = nodemailer.createTransport({
 	host: env.SMTP_HOST,
 	port: env.SMTP_PORT,
 	secure: env.SMTP_SECURE,
-	auth: {
-		user: env.SMTP_EMAIL,
-		pass: env.SMTP_PASSWORD,
-	},
+	auth: { user: env.SMTP_EMAIL, pass: env.SMTP_PASSWORD },
 });
 
 interface SendEmailRequest {
@@ -18,7 +14,7 @@ interface SendEmailRequest {
 	subject: string;
 	message: string;
 	html: string;
-	attachments?: Attachment[];
+	attachments?: Mail.Attachment[] | undefined;
 }
 
 export async function sendEmail({
@@ -38,11 +34,11 @@ export async function sendEmail({
 			...(attachments ? { attachments } : {}),
 		});
 
-		logger.info({ sentTo: to, messageId: info.messageId }, "Message sent!");
+		console.info("Message sent!", { sentTo: to, messageId: info.messageId });
 
 		return info;
 	} catch (error) {
-		logger.error({ error }, "Erro ao enviar e-mail");
+		console.error("Erro ao enviar e-mail", error);
 
 		throw error;
 	}

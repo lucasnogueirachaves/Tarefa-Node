@@ -24,6 +24,12 @@ export class PrismaUserRepository implements UsersRepository {
 			},
 		});
 	}
+	async findByUsername(username: string) {
+		return prisma.user.findUnique({ where: { username } });
+	}
+	async findByToken(token: string) {
+		return prisma.user.findUnique({ where: { token } });
+	}
 	async findManyByPublicId(publicIds: string[]) {
 		return await prisma.user.findMany({
 			where: {
