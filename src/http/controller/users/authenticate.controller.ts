@@ -16,19 +16,11 @@ export async function authenticate(
 
 		const { email, password } = authenticateBodySchema.parse(request.body);
 
-		const authenticateUserUseCase = makeAuthenticateUseCase();
-		const { user } = await authenticateUserUseCase.execute({
+		const authenticateUserUseCase = makeAuthenticateUseCase(reply);
+		const { user, token } = await authenticateUserUseCase.execute({
 			email,
 			password,
 		});
-
-		const token = await reply.jwtSign(
-			{
-				sub: user.publicId,
-				role: user.role,
-			},
-			{ expiresIn: "1d" },
-		);
 
 		return reply.status(200).send({ token, user: UserPresenter.toHTTP(user) });
 	} catch (error) {
