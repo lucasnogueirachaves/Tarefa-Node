@@ -1,10 +1,13 @@
-import type { Post } from '@/repositories/posts-repository.js'
+import type { Post } from "@/repositories/posts-repository.js";
 
-export function dailyHighlightsHtmlTemplate(userName: string, posts: Post[]): string {
-    const items = posts.length
-        ? posts
-              .map(
-                  (post, index) => `
+export function dailyHighlightsHtmlTemplate(
+	userName: string,
+	posts: Post[],
+): string {
+	const items = posts.length
+		? posts
+				.map(
+					(post, index) => `
               <tr>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;">
                   <p style="margin: 0; font-weight: bold; color: #333333;">
@@ -14,12 +17,12 @@ export function dailyHighlightsHtmlTemplate(userName: string, posts: Post[]): st
                     por ${post.authorName} · ❤️ ${post.likes} curtidas
                   </p>
                 </td>
-              </tr>`
-              )
-              .join('')
-        : `<tr><td style="padding: 12px 0; color: #777777;">Nenhum post recebeu curtidas nas últimas 24 horas.</td></tr>`
+              </tr>`,
+				)
+				.join("")
+		: `<tr><td style="padding: 12px 0; color: #777777;">Nenhum post recebeu curtidas nas últimas 24 horas.</td></tr>`;
 
-    return `
+	return `
   <!DOCTYPE html>
   <html lang="pt-br">
   <head>
@@ -50,5 +53,5 @@ export function dailyHighlightsHtmlTemplate(userName: string, posts: Post[]): st
     </table>
   </body>
   </html>
-  `
+  `;
 }

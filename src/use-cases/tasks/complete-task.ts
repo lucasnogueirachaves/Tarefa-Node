@@ -1,46 +1,42 @@
-import type { Task } from "@/@types/prisma/client.js"
-import type { TasksRepository } from "@/repositories/tasks-repository.js"
-import { ResourceNotFoundError } from "../errors/resource-not-found-error.js"
-import { NotAllowedError } from "../errors/not-allowed-error.js"
-
+import type { Task } from "@/@types/prisma/client.js";
+import type { TasksRepository } from "@/repositories/tasks-repository.js";
+import { NotAllowedError } from "../errors/not-allowed-error.js";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error.js";
 
 interface CompleteTaskUseCaseRequest {
-    publicId: string
-    loggedUserId: string
+	publicId: string;
+	loggedUserId: string;
 }
 
-
 interface CompleteTaskUseCaseResponse {
-    task: Task
+	task: Task;
 }
 
 export class CompleteTaskUseCase {
-    constructor(private tasksRepository: TasksRepository) {}
+	constructor(private tasksRepository: TasksRepository) {}
 
-    async execute({
-        publicId,
-        loggedUserId
-    }: CompleteTaskUseCaseRequest): Promise<CompleteTaskUseCaseResponse> {
+	async execute({
+		publicId,
+		loggedUserId,
+	}: CompleteTaskUseCaseRequest): Promise<CompleteTaskUseCaseResponse> {
+		const taskExists = await this.tasksRepository.findById(publicId);
 
-        const taskExists = await this.tasksRepository.findById(publicId)
+		if (!taskExists) {
+			throw new ResourceNotFoundError();
+		}
 
-        if (!taskExists) {
-            throw new ResourceNotFoundError()
-        }
+		const isAssigned = taskExists.taskUsers.some(
+			(taskUser) => taskUser.user.publicId === loggedUserId,
+		);
 
-        const isAssigned = taskExists.taskUsers.some(taskUser => taskUser.user.publicId === loggedUserId)
+		if (!isAssigned) {
+			throw new NotAllowedError();
+		}
 
-        if(!isAssigned) {
-            throw new NotAllowedError()
-        }
+		const task = await this.tasksRepository.update(publicId, {
+			completed: true,
+		});
 
-        const task = await this.tasksRepository.update(
-            publicId,
-            {
-                completed: true
-            }
-        )
-
-        return { task }
-    }
+		return { task };
+	}
 }

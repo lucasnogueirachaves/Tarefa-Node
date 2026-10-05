@@ -1,9 +1,9 @@
-import { env } from '@env/index'
+import { env } from "@env/index";
 
 export function forgotPasswordHtmlTemplate(userName: string, token: string) {
-  const url = `${env.FRONTEND_URL}/reset-password/${token}`
-  const appName = env.APP_NAME
-  return `
+	const url = `${env.FRONTEND_URL}/reset-password/${token}`;
+	const appName = env.APP_NAME;
+	return `
     <div style="font-family: Arial, sans-serif; color: #222;">
       <h2>Olá, ${userName}!</h2>
       <p>
@@ -27,5 +27,5 @@ export function forgotPasswordHtmlTemplate(userName: string, token: string) {
         Equipe ${appName}
       </p>
     </div>
-  `
+  `;
 }

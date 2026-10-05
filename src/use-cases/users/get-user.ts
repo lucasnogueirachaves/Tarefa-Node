@@ -3,23 +3,25 @@ import type { UsersRepository } from "@/repositories/users-repository.js";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error.js";
 
 interface GetUserUseCaseRequest {
-    publicId: string
+	publicId: string;
 }
 
 type GetUserUseCaseResponse = {
-    user: User
-}
+	user: User;
+};
 
 export class GetUserUseCase {
-    constructor(private usersRepository: UsersRepository) {}
+	constructor(private usersRepository: UsersRepository) {}
 
-    async execute({ publicId }: GetUserUseCaseRequest): Promise<GetUserUseCaseResponse> {
-        const user = await this.usersRepository.findById(publicId)
+	async execute({
+		publicId,
+	}: GetUserUseCaseRequest): Promise<GetUserUseCaseResponse> {
+		const user = await this.usersRepository.findById(publicId);
 
-        if (!user) {
-            throw new ResourceNotFoundError()
-        }
+		if (!user) {
+			throw new ResourceNotFoundError();
+		}
 
-        return {user}
-    }
+		return { user };
+	}
 }

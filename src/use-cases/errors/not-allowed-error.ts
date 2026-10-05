@@ -1,5 +1,5 @@
 export class NotAllowedError extends Error {
-    constructor() {
-        super("Você não tem permissão para realizar esta ação.")
-    }
+	constructor() {
+		super("Você não tem permissão para realizar esta ação.");
+	}
 }

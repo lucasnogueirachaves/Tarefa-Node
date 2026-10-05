@@ -1,31 +1,27 @@
-import type { ProjectsRepository } from "@/repositories/projects-repository.js"
+import type { ProjectsRepository } from "@/repositories/projects-repository.js";
 
 export class GetProjectsReportUseCase {
+	constructor(private projectsRepository: ProjectsRepository) {}
 
-    constructor(private projectsRepository: ProjectsRepository) {}
+	async execute() {
+		const projects = await this.projectsRepository.findManyWithTasks();
+		return projects.map((project) => {
+			const totalTasks = project.tasks.length;
 
-    async execute() {
-        const projects = await this.projectsRepository.findManyWithTasks()
-        return projects.map(project => {
+			const completedTasks = project.tasks.filter(
+				(task) => task.completed,
+			).length;
 
-            const totalTasks = project.tasks.length
+			const completionPercentage =
+				totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
 
-            const completedTasks = project.tasks.filter(
-                task => task.completed
-            ).length
-
-            const completionPercentage =
-                totalTasks === 0
-                    ? 0
-                    : (completedTasks / totalTasks) * 100
-
-            return {
-                projectId: project.publicId,
-                name: project.name,
-                totalTasks,
-                completedTasks,
-                completionPercentage
-            }
-        })
-    }
+			return {
+				projectId: project.publicId,
+				name: project.name,
+				totalTasks,
+				completedTasks,
+				completionPercentage,
+			};
+		});
+	}
 }
